@@ -12,9 +12,14 @@ import os
 import subprocess
 from pathlib import Path
 
+print ("\n\n\nHello, I will help you rename your music ^.^")
+print ("Please enter the directory your music is in.")
+print ("Enter it like: /home/username/music\n")
+musicDir = input("Directory:")
+
 files = []
 #folders = []
-for (path, dirnames, filenames) in os.walk('/home/mitch/Music'):
+for (path, dirnames, filenames) in os.walk(musicDir):
     #folders.extend(os.path.join(path, name) for name in dirnames)
     files.extend(os.path.join(path, name) for name in filenames)
 
