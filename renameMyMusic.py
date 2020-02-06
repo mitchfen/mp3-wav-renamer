@@ -1,23 +1,33 @@
 # requires sox to play music
-# requires Python 3.5 or higher for subprocess.run function
+# from my understanding the subprocess module is preferrable to os, but this works for now
+
+''' TODO 
+add mechanism to detect if sox is installed on Manjaro
+    os.system("pacman -Q sox")
+    then read in the bash output
+
+Sanitize user inputs - detect if they put mp3 or / or \
+
+Add functionality to move to sub directories within Music folder
+
+Add convenient way to count songs in directory and see progress working through them
+
+Add mechanism to keep file name the same
+'''
 import re
 import os
 import sys
 import subprocess
 from pathlib import Path
-
-''' TODO use subprocess to ensure sox is installed
-add mechanism to detect if sox is installed on Manjaro
-os.system("pacman -Q sox")
-subprocess.check_output(["pacman", "-Q", "sox"],stdout=subprocess.PIPE).communicate()[0]
-'''
+from colorama import Fore, init, Style
+init() # colorama documentation says to init() colorama
 
 # Ask user where the music is stored
-print ("\n\n\nHello, I will help you rename your music ^.^")
+print (Fore.GREEN + "\n\n\nHello, I will help you rename your music.")
 print ("Please enter the directory your music is in.")
 print ("Enter it like: /home/username/music\n")
-#musicDir = input("Directory:")
-musicDir = "/home/mitch/Music/"
+print(Style.RESET_ALL)
+musicDir = input("Directory:")
 
 # Walk that directory and build array of files
 files = []
@@ -31,12 +41,11 @@ for i in range (len(files)):
     tempString = str(files[i])
     files[i] = re.sub("\s", "\ ", tempString)
 
-print (files)
 # play song until keyboard interupt
-# should make this section a new color
-# TODO: add error checking so name is valid
 for i in range(len(files)):
+    print (Fore.YELLOW) # I want the sox output to be yellow so I can distinguish from my python
     os.system("play " + files[i])
+    print(Style.RESET_ALL)
     print ("\nKeyboard interupt detected\n")
     inputName = input("Name this file(x to delete): ")
     if inputName == "x":
@@ -48,3 +57,4 @@ for i in range(len(files)):
         os.system(cmd)
 
 
+deinit() # per colorama documentation
