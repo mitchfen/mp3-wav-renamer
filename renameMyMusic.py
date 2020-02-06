@@ -2,6 +2,7 @@
 # requires Python 3.5 or higher for subprocess.run function
 import re
 import os
+import sys
 import subprocess
 from pathlib import Path
 
@@ -43,7 +44,7 @@ for i in range(len(files)):
     else:
         inputName = musicDir + inputName + ".mp3"
         print (inputName)
-        #os.rename(files[i], inputName)
-
+        cmd = ("mv " + files[i] + " " + inputName)
+        os.system(cmd)
 
 
