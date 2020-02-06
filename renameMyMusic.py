@@ -1,25 +1,21 @@
-# requires sox to play music
-# from my understanding the subprocess module is preferrable to os, but this works for now
-
 ''' TODO 
 add mechanism to detect if sox is installed on Manjaro
     os.system("pacman -Q sox")
     then read in the bash output
-
-Sanitize user inputs - detect if they put mp3 or / or \
-
-Add functionality to move to sub directories within Music folder
-
-Add convenient way to count songs in directory and see progress working through them
-
-Add mechanism to keep file name the same
+-Sanitize user inputs - detect if they put mp3 or / or \
+-Add functionality to move to sub directories within Music folder
+-Add convenient way to count songs in directory and see progress working through them
+-Add mechanism to keep file name the same
+-Right now it assumes all files are mp3, need more code to deal with wav files
 '''
+
 import re
 import os
 import sys
 import subprocess
 from pathlib import Path
 from colorama import Fore, init, Style
+
 init() # colorama documentation says to init() colorama
 
 # Ask user where the music is stored
@@ -27,7 +23,12 @@ print (Fore.GREEN + "\n\n\nHello, I will help you rename your music.")
 print ("Please enter the directory your music is in.")
 print ("Enter it like: /home/username/music\n")
 print(Style.RESET_ALL)
-musicDir = input("Directory:")
+print (Fore.BLUE + "Directory: ", end = "")   # want input on same line, different color
+print(Style.RESET_ALL, end = "")
+musicDir = input()
+
+#ensure directory is valid
+assert os.path.exists(musicDir), "ERROR "+str(musicDir) + " is an invalid directory"
 
 # Walk that directory and build array of files
 files = []
@@ -55,6 +56,5 @@ for i in range(len(files)):
         print (inputName)
         cmd = ("mv " + files[i] + " " + inputName)
         os.system(cmd)
-
 
 deinit() # per colorama documentation
