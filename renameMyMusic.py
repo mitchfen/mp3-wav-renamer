@@ -46,7 +46,8 @@ for i in range(len(files)):
     print (Fore.YELLOW) # I want the sox output to be yellow so I can distinguish from my python
     os.system("play " + files[i])
     print(Style.RESET_ALL)
-    inputName = input("Name this file(x to delete, k to keep): ")
+    print("Name this file(x to delete, k to keep) do not include extension.")
+    inputName = input("Name: ")
     if inputName == "x":
             #os.remove(files[i])    This fails when file name has spaces, unsure why
             cmd = ("rm " + files[i])
@@ -57,7 +58,10 @@ for i in range(len(files)):
             print(Fore.RED + "Keeping file as " + files[i])
             print(Style.RESET_ALL)
     else:
-        inputName = musicDir + inputName + ".mp3"
+        if files[i][len(files[i])-1] == "3": # mp3 file
+            inputName = musicDir + inputName + ".mp3"
+        elif files[i][len(files[i])-1] == "v": # wav file
+            inputName = musicDir + inputName + ".wav"
         print(Fore.RED + "Renaming to " + inputName)    # want to confirm rename in red
         print(Style.RESET_ALL)
         cmd = ("mv " + files[i] + " " + inputName)
