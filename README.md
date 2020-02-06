@@ -5,5 +5,11 @@ I have a lot of songs with random or unintuitive names. This program reads each 
 
 Each song in the specified directory is played until a keyboard interupt or the song ends, at which point the user is asked to rename the song or delete it.
 
-### Screenshot
+## Screenshot
+
 ![broken-link](https://github.com/mitchfen/renameMyMusic/blob/master/screenshots/screen1.png)
+
+### Dependencies
+
+Colorama: `pip install colorama`  
+SoX: `sudo apt-get install sox` or `sudo pacman -S sox`
