@@ -23,23 +23,27 @@ files = []
 #folders = []
 for (path, dirnames, filenames) in os.walk(musicDir):
     #folders.extend(os.path.join(path, name) for name in dirnames)
-    files.extend(os.path.join(path, name) for name in filenames)
+    files.extend(os.path.join(path, name) for name in sorted(filenames))
 
 # iterate through files array and use regex to replace " " with "\ " so we can navigate directories
 for i in range (len(files)):
     tempString = str(files[i])
     files[i] = re.sub("\s", "\ ", tempString)
 
+print (files)
 # play song until keyboard interupt
 # should make this section a new color
+# TODO: add error checking so name is valid
 for i in range(len(files)):
     os.system("play " + files[i])
     print ("\nKeyboard interupt detected\n")
-    inputName = input("Name this file: ")
-    # TODO: add error checking so name is valid
-    inputName = musicDir + "/" inputName
-    print (inputName)
-#    os.rename(files[i], inputName)
+    inputName = input("Name this file(x to delete): ")
+    if inputName == "x":
+            os.remove(files[i])
+    else:
+        inputName = musicDir + inputName + ".mp3"
+        print (inputName)
+        #os.rename(files[i], inputName)
 
 
 
