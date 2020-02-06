@@ -28,6 +28,7 @@ print(Style.RESET_ALL, end = "")
 musicDir = input()
 
 #ensure directory is valid
+# TODO: add code to confirm / at end of directory. This is critical
 assert os.path.exists(musicDir), "ERROR "+str(musicDir) + " is an invalid directory"
 
 # Walk that directory and build array of files
@@ -53,7 +54,8 @@ for i in range(len(files)):
             os.remove(files[i])
     else:
         inputName = musicDir + inputName + ".mp3"
-        print (inputName)
+        print(Fore.RED + "Renaming to " + inputName)    # want to confirm rename in red
+        print(Style.RESET_ALL)
         cmd = ("mv " + files[i] + " " + inputName)
         os.system(cmd)
 
