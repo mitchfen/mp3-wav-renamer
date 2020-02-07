@@ -1,5 +1,6 @@
 ''' TODO 
 -need to be able to detect redundant names to avoid overwrite
+    easy way would be to check name you want to write it as against the files[] list
 -add mechanism to detect if sox is installed on Manjaro
     os.system("pacman -Q sox")
     then read in the bash output
@@ -12,6 +13,19 @@ import sys
 import subprocess
 from pathlib import Path
 from colorama import Fore, Style
+
+'''
+Not going to be as simple as I thought
+The files[i] or "pathToSong" is the full path including the name and extension
+need to trip off the original song name and append the new one, 
+then check that resulting string against files[] AND because files[] is never updated, need to keep track of names in second list
+and check this new name against that list as well
+
+# here files[i] is passed as pathToSong 
+def ensureNoOverwrite(files, pathToSong, newName):
+    for i in range(len(files)):
+        newPath = pathToSong + newName
+'''
 
 def renameSong(pathToSong, newName):            
     print(Fore.RED + "Renaming to " + newName)    # want to confirm rename in red
@@ -35,7 +49,7 @@ def getMusicDirectory():
     assert os.path.exists(musicDir), "ERROR "+str(musicDir) + " is an invalid directory"
     return musicDir
 
-def getAndCheckSongName(nameToCheck):
+def sanitizeSongName(nameToCheck):
     # ensure that name the user wants does not contain weird characters
     # only spaces and alphanumerics are allowed
     # multiple spaces are allowed but seriously.. don't do that
@@ -50,7 +64,7 @@ def getAndCheckSongName(nameToCheck):
     return nameToCheck
 
 def playAndTakeInput(musicDir, files = []):
-    for i in range(len(files)):
+    for i in range(len(files)-1):
         # I want the sox output to be yellow so I can distinguish from my python
         print (Fore.YELLOW) 
         # need to wrap file names in quotes so bash can read them properly
@@ -59,7 +73,7 @@ def playAndTakeInput(musicDir, files = []):
         print("Name this file(x to delete, k to keep) do not include extension.")
         uncheckedName = input("Name: ")
         # pass the desired name to check it before continuing
-        songName = getAndCheckSongName(uncheckedName)
+        songName = sanitizeSongName(uncheckedName)
 
         if songName== "x":
                 cmd = ("rm " + "\"" + files[i] + "\"")
@@ -81,7 +95,7 @@ def playAndTakeInput(musicDir, files = []):
                 print(Fore.RED + "Renaming to") 
             
 def collectSongs(musicDir, files = []):
-    # Walk the directory and build array of files
+    # Walk the directory and build list of files
     for (path, dirnames, filenames) in os.walk(musicDir):
         files.extend(os.path.join(path, name) for name in sorted(filenames))
     return files
