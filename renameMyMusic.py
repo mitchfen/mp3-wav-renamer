@@ -2,11 +2,8 @@
 add mechanism to detect if sox is installed on Manjaro
     os.system("pacman -Q sox")
     then read in the bash output
--Sanitize user inputs - detect if they include .mp3 or slashes
--Fix issues dealing with files which have unexpected characters like () or #
 -Add functionality to move to sub directories within Music folder
 -Add convenient way to count songs in directory and see progress working through them
--Right now it assumes all files are mp3, need more code to deal with wav files
 '''
 import re
 import os
@@ -77,10 +74,11 @@ def playAndTakeInput(files = []):
             else:
                 print(Fore.RED + "Renaming to") 
             
-def collectSongs(musicDir, files = []):
+def collectSongs(musicDir):
     # Walk the directory and build array of files
     # Then iterate through files array and use regex to replace " " with "\ " so we can navigate directories
     # Example: /home/mitch/music/song\ with\ spaces.mp3
+    files = []
     for (path, dirnames, filenames) in os.walk(musicDir):
         files.extend(os.path.join(path, name) for name in sorted(filenames))
     for i in range (len(files)):
@@ -88,7 +86,5 @@ def collectSongs(musicDir, files = []):
         files[i] = re.sub("\s", "\ ", tempString)
     return files
 
-musicDir = getMusicDirectory()
-files = []
-collectSongs(musicDir, files)
-playAndTakeInput(files)
+# Its not silly if it works
+playAndTakeInput(collectSongs(getMusicDirectory()))
