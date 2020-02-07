@@ -1,9 +1,9 @@
 ''' TODO 
-add mechanism to detect if sox is installed on Manjaro
+-need to be able to detect redundant names to avoid overwrite
+-add mechanism to detect if sox is installed on Manjaro
     os.system("pacman -Q sox")
     then read in the bash output
 -Add functionality to move to sub directories within Music folder
-    Could ask 
 -Add convenient way to count songs in directory and see progress working through them
 '''
 import re
@@ -62,7 +62,7 @@ def playAndTakeInput(musicDir, files = []):
         songName = getAndCheckSongName(uncheckedName)
 
         if songName== "x":
-                cmd = ("rm " + files[i])
+                cmd = ("rm " + "\"" + files[i] + "\"")
                 os.system(cmd)     
                 print(Fore.RED + "Deleted.")
                 print(Style.RESET_ALL)
