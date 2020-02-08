@@ -1,32 +1,18 @@
-''' TODO 
--need to be able to detect redundant names to avoid overwrite
-    easy way would be to check name you want to write it as against the files[] list
--add mechanism to detect if sox is installed on Manjaro
-    os.system("pacman -Q sox")
-    then read in the bash output
--Add functionality to move to sub directories within Music folder
--Add convenient way to count songs in directory and see progress working through them
+''' TODO
+- add windows support - sox setup not simple on windows, need alternative
+- need to be able to detect redundant names to avoid overwrite
+- add mechanism to detect if sox is installed before playing music
+- add functionality to move to sub directories within Music folder
+- add output to see how many songs exist and how many have been renamed
 '''
 import re
 import os
 import sys
 import subprocess
 from pathlib import Path
-from colorama import Fore, Style
+from colorama import Fore, Style, deinit, init
 
-'''
-Not going to be as simple as I thought
-The files[i] or "pathToSong" is the full path including the name and extension
-need to trip off the original song name and append the new one, 
-then check that resulting string against files[] AND because files[] is never updated, need to keep track of names in second list
-and check this new name against that list as well
-
-# here files[i] is passed as pathToSong 
-def ensureNoOverwrite(files, pathToSong, newName):
-    for i in range(len(files)):
-        newPath = pathToSong + newName
-'''
-
+init() # initialize colorama
 def renameSong(pathToSong, newName):            
     print(Fore.RED + "Renaming to " + newName)    # want to confirm rename in red
     print(Style.RESET_ALL)
@@ -64,7 +50,7 @@ def sanitizeSongName(nameToCheck):
     return nameToCheck
 
 def playAndTakeInput(musicDir, files = []):
-    for i in range(len(files)-1):
+    for i in range(len(files)):
         # I want the sox output to be yellow so I can distinguish from my python
         print (Fore.YELLOW) 
         # need to wrap file names in quotes so bash can read them properly
@@ -84,7 +70,6 @@ def playAndTakeInput(musicDir, files = []):
                 print(Fore.RED + "Keeping file as " + files[i])
                 print(Style.RESET_ALL)
         else:
-
             if files[i][len(files[i])-1] == "3": # mp3 file
                 songName = musicDir + songName + ".mp3"
                 renameSong(files[i], songName)
@@ -93,6 +78,7 @@ def playAndTakeInput(musicDir, files = []):
                 renameSong(files[i], songName)
             else:
                 print(Fore.RED + "Renaming to") 
+    deinit() #stop colorama
             
 def collectSongs(musicDir, files = []):
     # Walk the directory and build list of files
@@ -100,7 +86,6 @@ def collectSongs(musicDir, files = []):
         files.extend(os.path.join(path, name) for name in sorted(filenames))
     return files
 
-# Its not silly if it works
 musicDir = getMusicDirectory()
 files = []
 files = collectSongs(musicDir, files)

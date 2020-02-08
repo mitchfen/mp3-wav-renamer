@@ -1,9 +1,10 @@
 # renameMyMusic.py
 
 I am writing this python script to help me organize my mess of a music library.  
-I have a lot of songs with random or unintuitive names. This program reads each file into an array, then iterates through them and plays each one.  
 
-Each song in the specified directory is played until a keyboard interupt or the song ends, at which point the user is asked to rename the song, delete it, or keep it.
+This program reads each mp3 or wav into a list, then iterates through them and plays each one until a keyboard interupt.
+
+Then the user is asked to rename the song, delete it, or keep it.
 
 ## Screenshot
 
@@ -11,5 +12,5 @@ Each song in the specified directory is played until a keyboard interupt or the 
 
 ### Dependencies
 
-Colorama: `pip install colorama`  
-SoX: `sudo apt-get install sox` or `sudo pacman -S sox`
+Colorama:  `pip install colorama`  
+SoX: Ubuntu and derivatives use `sudo apt-get install sox` or `sudo pacman -S sox` on Manjaro
