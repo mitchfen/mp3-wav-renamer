@@ -5,6 +5,7 @@
 - add functionality to move to sub directories within Music folder
 - add output to see how many songs exist and how many have been renamed
 '''
+import platform
 import re
 import os
 import sys
@@ -54,7 +55,13 @@ def playAndTakeInput(musicDir, files = []):
         # I want the sox output to be yellow so I can distinguish from my python
         print (Fore.YELLOW) 
         # need to wrap file names in quotes so bash can read them properly
-        os.system("play " + "\"" + files[i] + "\"")
+        if platform.system() == 'Windows':
+            os.system("vlc --intf dummy " + "\"" + files[i] + "\"")
+        elif platform.system() =='Linux':
+            os.system("play " + "\"" + files[i] + "\"")
+        else:
+                print("\nCannot determine OS, exiting...\n")
+                sys.exit()
         print(Style.RESET_ALL)
         print("Name this file(x to delete, k to keep) do not include extension.")
         uncheckedName = input("Name: ")

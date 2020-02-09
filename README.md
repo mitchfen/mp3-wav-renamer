@@ -13,4 +13,6 @@ Then the user is asked to rename the song, delete it, or keep it.
 ### Dependencies
 
 Colorama:  `pip install colorama`  
-SoX: Ubuntu and derivatives use `sudo apt-get install sox` or `sudo pacman -S sox` on Manjaro
+SoX: Ubuntu and derivatives use `sudo apt-get install sox` or `sudo pacman -S sox` on Manjaro  
+
+VLC if you are running the script on Windows  [VLC](https://www.videolan.org/vlc/)
