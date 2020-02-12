@@ -2,7 +2,7 @@
 
 I am writing this python script to help me organize my mess of a music library.  
 
-This program reads each mp3 or wav into a list, then iterates through them and plays each one until a keyboard interupt (CTRL + C).
+This program reads each mp3 or wav into a list, then iterates through them and plays each one until a keyboard interrupt (CTRL + C).
 
 The user is then asked to rename the song, delete it, or keep it.
 
