@@ -30,9 +30,15 @@ def getMusicDirectory():
     print (Fore.BLUE + "Directory: ", end = "")   # want input on same line, different color
     print(Style.RESET_ALL, end = "")
     musicDir = input()
-     #Ensure directory is valid and ends in a backslash
-    if musicDir[len(musicDir)-1] != "/":
-        musicDir += "/"
+    # Ensure directory terminates in correct symbol.
+    # Need a / on Unix, \ for Windows
+    if platform.system() == 'Windows':
+        if musicDir[len(musicDir)-1] != "\"":
+            musicDir += "/"
+    if platform.system() == 'Linux':
+        if musicDir[len(musicDir)-1] != "/":
+            musicDir += "/"
+    # Ensure path is valid, we don't want to start running rm operations on a bad directory
     assert os.path.exists(musicDir), "ERROR "+str(musicDir) + " is an invalid directory"
     return musicDir
 
@@ -54,9 +60,11 @@ def playAndTakeInput(musicDir, files = []):
     for i in range(len(files)):
         # I want the sox output to be yellow so I can distinguish from my python
         print (Fore.YELLOW) 
-        # need to wrap file names in quotes so bash can read them properly
+        # need to wrap file names in quotes so they are read properly
         if platform.system() == 'Windows':
-            os.system("vlc --intf dummy " + "\"" + files[i] + "\"")
+#            os.system("vlc --intf dummy " + "\"" + files[i] + "\"")
+            print("Sorry, windows development ongoing... Not working yet")
+            sys.exit()
         elif platform.system() =='Linux':
             os.system("play " + "\"" + files[i] + "\"")
         else:
