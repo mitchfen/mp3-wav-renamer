@@ -9,9 +9,9 @@ init() # initialize colorama
 
 def getMusicDirectory():
     # Ask user where the music is stored
-    print (Fore.GREEN + "\nHello, I will help you rename your music.")
-    print ("Please enter the directory your music is in.")
-    print ("Enter it like: /home/username/music\n")
+    print (Fore.GREEN + "\nPlease enter the directory your music is in.")
+    print ("Enter it like: /home/username/music")
+    print ("or C:\\Users\\mitch\\Music\n")
     print(Style.RESET_ALL)
     print (Fore.BLUE + "Directory: ", end = "")   # want input on same line, different color
     print(Style.RESET_ALL, end = "")
@@ -41,46 +41,48 @@ def mainLoop(musicDir, files = []):
         # need to wrap file names in quotes so they are read properly
         if system() == 'Windows':
             #os.system("vlc --intf dummy " + "\"" + files[i] + "\"")
+            #os.system('cls')
             print("Sorry, windows development ongoing... Not working yet")
             deinit() # need to stop colorama before exiting 
             sys.exit()
         elif system() =='Linux':
+            os.system('clear')
             os.system("play " + "\"" + files[i] + "\"")
         else:
                 print("\nCannot determine OS, exiting...\n")
                 deinit() # stop colorama before exiting
                 sys.exit()
         # After keyboard interrupt:
-        actionOnFile(i)
+        renamePrompt(i)
 
     deinit() #stop colorama
 
-def actionOnFile(i):
+def renamePrompt(i):
     print(Style.RESET_ALL)
     print("Name this file(x to delete, k to keep) do not include extension.")
     uncheckedName = input("Name: ")
     # pass the desired name to check it before continuing
-    songName = sanitizeSongName(uncheckedName)
+    newName = sanitizeSongName(uncheckedName)
 
-    if songName== "x":
+    if newName == "x":
         cmd = ("rm " + "\"" + files[i] + "\"")
         os.system(cmd)     
         print(Fore.RED + "Deleted.")
         print(Style.RESET_ALL)
-    elif songName == "k":
+    elif newName == "k":
         print(Fore.RED + "Keeping file as " + files[i])
         print(Style.RESET_ALL)
     else:
-        if files[i][len(files[i])-1] == "3": # mp3 file
-            songName = musicDir + songName + ".mp3"
-            renameSong(files[i], songName)
-        elif files[i][len(files[i])-1] == "v": # wav file
-            songName = musicDir + songName + ".wav"
-            renameSong(files[i], songName)
-        else:
-            print(Fore.RED + "Renaming to")
+            renameSong(files[i], newName)
 
 def renameSong(pathToSong, newName):            
+    if pathToSong[len(pathToSong)-1] =="3": # mp3 file
+        newName = musicDir + newName +".mp3"
+    elif pathToSong[len(pathToSong)-1] =="v": # wav file
+        newName = musicDir + newName +".wav"
+
+    #TODO: add detection for non wav or mp3 here 
+
     print(Fore.RED + "Renaming to " + newName)    # want to confirm rename in red
     print(Style.RESET_ALL)
     # mv bash command must recieve two arguments in quotes
