@@ -60,34 +60,38 @@ def mainLoop(musicDir, files = []):
 def renamePrompt(i):
     print(Style.RESET_ALL)
     print("Name this file(x to delete, k to keep) do not include extension.")
-    uncheckedName = input("Name: ")
+    unsanitizedName = input("Name: ")
     # pass the desired name to check it before continuing
-    newName = sanitizeSongName(uncheckedName)
-
-    if newName == "x":
+    if unsanitizedName== "x":
         cmd = ("rm " + "\"" + files[i] + "\"")
         os.system(cmd)     
         print(Fore.RED + "Deleted.")
         print(Style.RESET_ALL)
-    elif newName == "k":
+    elif unsanitizedName== "k":
         print(Fore.RED + "Keeping file as " + files[i])
         print(Style.RESET_ALL)
     else:
+            newName = sanitizeSongName(unsanitizedName)
             renameSong(files[i], newName)
 
 def renameSong(pathToSong, newName):            
+    # Add appropriate extension to the song
     if pathToSong[len(pathToSong)-1] =="3": # mp3 file
         newName = musicDir + newName +".mp3"
     elif pathToSong[len(pathToSong)-1] =="v": # wav file
         newName = musicDir + newName +".wav"
-
-    #TODO: add detection for non wav or mp3 here 
-
-    print(Fore.RED + "Renaming to " + newName)    # want to confirm rename in red
-    print(Style.RESET_ALL)
-    # mv bash command must recieve two arguments in quotes
-    cmd = ("mv " + "\"" + pathToSong + "\"" + " " + "\"" + newName + "\"")
-    os.system(cmd)
+    # Detect if song with that name already present
+    AlreadyExists = os.path.exists(newName)
+    if (AlreadyExists):
+        secondaryName = input("Name already in use, please rename: ")
+        sanitizeSongName(secondaryName)
+        renameSong(pathToSong, secondaryName)
+    else:  
+        # want to confirm rename in red
+        print(Fore.RED + "Renaming to " + newName)  
+        print(Style.RESET_ALL)
+        cmd = ("mv " + "\"" + pathToSong + "\"" + " " + "\"" + newName + "\"")
+        os.system(cmd)
 
 def sanitizeSongName(nameToCheck):
     # ensure that name the user wants does not contain weird characters
