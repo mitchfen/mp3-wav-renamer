@@ -40,9 +40,11 @@ def collectSongs(musicDir, files = []):
     
     # Remove files which are not music
     # Will be faster to do an if statement inside the above loop
-    for i in range(len(files)):
+    i = 0
+    while (i < len(files)-1):
         if not files[i].endswith('.mp3') and not files[i].endswith('wav'):
-            files.pop(i) 
+            files.pop(i)
+        i = i + 1
 
     return files
 
