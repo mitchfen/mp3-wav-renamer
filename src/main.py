@@ -11,7 +11,7 @@ from rename import renamePrompt
 
 def mainLoop(musicDir, files = []):
 
-	# Loop throught the list, playing each file until keyboard interupt, then rename/keep/delete
+    # Loop throught the list, playing each file until keyboard interupt, then rename/keep/delete
     # Continue looping until each file in the list is handled then program terminates
 
     for i in range(len(files)):
@@ -29,9 +29,9 @@ def mainLoop(musicDir, files = []):
             #os.system('clear')
             os.system("play " + "\"" + files[i] + "\"")
         else:
-                print("\nCannot determine OS, exiting...\n")
-                colorama.deinit() # stop colorama before exiting
-                sys.exit()
+            print("\nCannot determine OS, exiting...\n")
+            colorama.deinit() # stop colorama before exiting
+            sys.exit()
 
         # After keyboard interrupt:
         renamePrompt(i, files, musicDir)
