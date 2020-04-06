@@ -1,10 +1,15 @@
 
-# mp3 + wav Renamer
+# mp3 + wav renamer
 
+## Overview
 I'm writing this program to help me organize my mess of a music library.
 This program reads each mp3 or wav into a list, then iterates through them and plays each one until a keyboard interrupt (CTRL + C). The user is then asked to rename the song, delete it, or keep it.
 
 The script will prevent invalid song names, invalid directories, and detect the right file extensions mp3 and wav.
+
+## Screens
+
+<img src="https://github.com/mitchfen/renameMyMusic/blob/master/screenshots/screen1.png" width="300" />
 
 ## Dependencies
 
@@ -15,7 +20,11 @@ The script will prevent invalid song names, invalid directories, and detect the 
 * `sudo apt-get install sox` on Debian and derivatives
 * `sudo pacman -S sox` on Manjaro/Arch
 
-### TODO
+## Running the program
+
+`python main.py` 
+
+## TODO
 
 * Windows support:
     * SoX not workable on windows.
@@ -24,7 +33,6 @@ The script will prevent invalid song names, invalid directories, and detect the 
 * Add functionality for moving songs into sub directories
 * Add output to see progress
 
-### Screenshot
 
-![broken-link](https://github.com/mitchfen/renameMyMusic/blob/master/screenshots/screen1.png)
+
 
