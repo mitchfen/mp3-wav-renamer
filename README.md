@@ -1,34 +1,32 @@
 
 # mp3 + wav renamer
 
-### Overview
-I'm writing this program to help me organize my mess of a music library.
-This program reads each mp3 or wav into a list, then iterates through them and plays each one until a keyboard interrupt (CTRL + C). The user is then asked to rename the song, delete it, or keep it.
+## Overview
+I wrote this program to help me organize my mess of a music library.
+Each mp3 or wav is read into a list. The list is iterated, playing each track until a keyboard interrupt (CTRL + C).  
+The user is then asked to rename the track, delete it, or keep it.
+The script will prevent invalid track names, invalid directories, and detect the correct file extensions (mp3 and wav).
 
-The script will prevent invalid song names, invalid directories, and detect the right file extensions mp3 and wav.
+## Screenshots
 
-### Screenshot
+Note that output differs because I use SoX to play the tracks on Linux but use the winsound module in Windows.  
+Winsound is not the ideal solution, but it is functional.
 
+**Linux output**  
 <img src="https://github.com/mitchfen/renameMyMusic/blob/master/screenshots/screen1.png" width="500" />
 
-### Dependencies
+**Windows output**  
+<img src="https://github.com/mitchfen/renameMyMusic/blob/master/screenshots/screen2.png" width="500" />
 
-**Colorama**
+## Dependencies
+
+Colorama (All platforms)
 * `pip install colorama`
 
-**SoX**
+SoX (Linux)
 * `sudo apt-get install sox` on Debian and derivatives
 * `sudo pacman -S sox` on Manjaro/Arch
 
-### Running the program
+## Running the program
 
-Type `python main.py` into your shell.
-
-### TODO
-
-* Windows support:
-    * SoX not workable on windows.
-    * Have tried VLC without GUI but need a way to cancel playback
-    * [cmdmp3](https://github.com/jimlawless/cmdmp3) could be workable
-* Add functionality for moving songs into sub directories
-* Add output to see progress
+Just type `python main.py` into your shell.

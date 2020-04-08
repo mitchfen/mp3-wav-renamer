@@ -1,8 +1,20 @@
 import os
 import sys
 import platform
-import colorama
 import re
+
+# Attempt to import colorama if module installed
+try:
+    import colorama
+except ImportError:
+    print("You need to install the colorama module using \"pip install colorama\" before proceeding")
+    sys.exit()
+
+# Attempt to import winsound - need this on Windows but not for Linux
+try:
+    import winsound
+except ImportError:
+    pass
 
 def collectSongs(musicDir, files = []):
    
@@ -85,15 +97,15 @@ def getMusicDirectory():
     print ("Linux ex: /home/yourUsername/music")
     print("Windows ex: C:\\Users\yourUsername\\music")
     print(colorama.Style.RESET_ALL)
-    print (colorama.Fore.BLUE + "Directory: ", end = "")   # want input on same line, different color
+    print (colorama.Fore.MAGENTA + "Directory: ", end = "")   # want input on same line, different color
     print(colorama.Style.RESET_ALL, end = "")
     musicDir = input()
 
     # Ensure directory terminates in correct symbol.
-    # Need to terminate in / on Windows
+    # Need to terminate in \ on Windows
     if platform.system() == 'Windows':
-        if musicDir[len(musicDir)-1] != "\"":
-            musicDir += "/"
+        if musicDir[len(musicDir)-1] != "\\":
+            musicDir += "\\"
 
     # Need a / on Unix
     if platform.system() == 'Linux':
@@ -110,19 +122,20 @@ def mainLoop(musicDir, files = []):
     # Continue looping until each file in the list is handled then program terminates
 
     for i in range(len(files)):
+        
         # I want the sox output to be yellow so I can distinguish from my python
-        print (colorama.Fore.YELLOW)
-        # need to wrap file names in quotes so they are read properly
-
+        print (colorama.Fore.GREEN)
+        
         if platform.system() == 'Windows':
-            #os.system("vlc --intf dummy " + "\"" + files[i] + "\"")
-            #os.system('cls')
-            print("Sorry, windows development ongoing... Not working yet")
-            colorama.deinit() # need to stop colorama before exiting
-            sys.exit()
+            print(colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + "\nPlaying:\n" + files[i] +"\n")
+                      
+            winsound.PlaySound(files[i], winsound.SND_ASYNC)
+
         elif platform.system() =='Linux':
             #os.system('clear')
             os.system("play " + "\"" + files[i] + "\"")
+
         else:
             print("\nCannot determine OS, exiting...\n")
             colorama.deinit() # stop colorama before exiting
@@ -134,8 +147,8 @@ def mainLoop(musicDir, files = []):
     # If user has provided input on all songs in the list, the program exits here
     colorama.deinit() #stop colorama 
 
-
 # Program control flow begins here
+#checkIfwinsoundNeeded()
 colorama.init() # per colorama documentation
 musicDir = getMusicDirectory()
 files = []
