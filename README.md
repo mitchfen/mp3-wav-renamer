@@ -21,7 +21,7 @@ Winsound is not the ideal solution, but it is functional.
 ## Dependencies
 
 Colorama (All platforms)
-* `pip install colorama`
+* `pip3 install colorama`
 
 SoX (Linux)
 * `sudo apt-get install sox` on Debian and derivatives
@@ -29,4 +29,4 @@ SoX (Linux)
 
 ## Running the program
 
-Just type `python main.py` into your shell.
+Just type `python3 main.py` into your shell.
