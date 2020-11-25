@@ -10,39 +10,25 @@ except ImportError:
     print("You need to install the colorama module using \"pip install colorama\" before proceeding")
     sys.exit()
 
-# Attempt to import winsound - need this on Windows but not for Linux
-try:
-    import winsound
-except ImportError:
-    pass
-
 def main():
 
-    colorama.init() # per colorama documentation     
+    colorama.init() # per colorama documentation
     musicDir = getMusicDirectory()
     files = []
     files = collectSongs(musicDir, files)
 
     # Loop throught the list, playing each file until keyboard interupt, then rename/keep/delete
     # Continue looping until each file in the list is handled then program terminates
-    for i in range(len(files)):     
+    for i in range(len(files)):
 
         # I want the music playing output to be green
         print (colorama.Fore.GREEN)
-        
-        if platform.system() == 'Windows':
-            print("\nPlaying:\n" + files[i] +"\n")
-
-            # Play music with winsound module
-            winsound.PlaySound(files[i], winsound.SND_ASYNC)
-
-        elif platform.system() =='Linux':
-            
+        if platform.system() =='Linux':
             # Send "play" command to bash, which is a SoX command - simply plays in terminal
             os.system("play " + "\"" + files[i] + "\"")
 
         else:
-            print("\nCannot determine OS, exiting...\n")
+            print("\nYou need to be using Linux!\n")
             colorama.deinit() # stop colorama before exiting
             sys.exit()
 
@@ -54,22 +40,15 @@ def main():
 
 def getMusicDirectory():
 
-    # Ask user where the music is stored 
+    # Ask user where the music is stored
     # Color this section green
     print (colorama.Fore.GREEN + "\nPlease enter the directory your music is in.")
-    print ("Linux ex: /home/yourUsername/music")
-    print("Windows ex: C:\\Users\yourUsername\\music")
+    print ("Example: /home/mitch/music")
     print(colorama.Style.RESET_ALL)
     print (colorama.Fore.MAGENTA + "Directory: ", end = "")   # want input on same line, different color
     print(colorama.Style.RESET_ALL, end = "")
-    
-    musicDir = input()
 
-    # Ensure directory terminates in correct symbol.
-    # Need to terminate in \ on Windows
-    if platform.system() == 'Windows':
-        if musicDir[len(musicDir)-1] != "\\":
-            musicDir += "\\"
+    musicDir = input()
 
     # Need a / on Unix
     if platform.system() == 'Linux':
@@ -81,7 +60,7 @@ def getMusicDirectory():
     return musicDir
 
 def collectSongs(musicDir, files = []):
-   
+
     # Walk the directory and build list of files
     for (path, dirnames, filenames) in os.walk(musicDir):
         files.extend(os.path.join(path, name) for name in sorted(filenames))
@@ -105,7 +84,7 @@ def renamePrompt(i, files, passedDirectory):
 
     if unsanitizedName== "x":
         cmd = ("rm " + "\"" + files[i] + "\"")
-        os.system(cmd)     
+        os.system(cmd)
         print(colorama.Fore.RED + "Deleted.")
         print(colorama.Style.RESET_ALL)
     elif unsanitizedName== "k":
@@ -134,15 +113,15 @@ def sanitizeSongName(nameToCheck):
             nameToCheck = input("Please try again: ")
     return nameToCheck
 
-def renameSong(pathToSong, newName, passedDirectory):            
+def renameSong(pathToSong, newName, passedDirectory):
 
     if pathToSong.endswith('.mp3'):
         newName = passedDirectory + newName +".mp3"
     elif pathToSong.endswith('.wav'):
         newName = passedDirectory + newName +".wav"
-    
+
     # Detect if file with same name already exists
-    # NOTE: This intentionally allows both song.mp3 and song.wav to exist. 
+    # NOTE: This intentionally allows both song.mp3 and song.wav to exist.
     #               Such a scenario is not detected
     if os.path.exists(newName):
         secondaryName = input("Name already in use, please rename: ")
@@ -151,8 +130,8 @@ def renameSong(pathToSong, newName, passedDirectory):
 
     # If the song name is unique and valid, then print out its new name in red
     # Then use the mv command to rename the file
-    else:  
-        print(colorama.Fore.RED + "Renaming to " + newName)  
+    else:
+        print(colorama.Fore.RED + "Renaming to " + newName)
         print(colorama.Style.RESET_ALL) # Only want one line to be red so reset color right away
         cmd = ("mv " + "\"" + pathToSong + "\"" + " " + "\"" + newName + "\"") # Wrap everything in quotes
         os.system(cmd)
