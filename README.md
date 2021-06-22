@@ -15,4 +15,4 @@ The script will prevent invalid track names, invalid directories, and detect the
     * Fedora: `sudo dnf install sox`
 
 ## Screenshot 
-<img src="./screenshots/screen2.png" width="700" />
+<img src="./screenshots/screen1.png" width="700" />
