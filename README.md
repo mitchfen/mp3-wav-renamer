@@ -1,5 +1,5 @@
 
-# mp3 + wav renamer
+# music_renamer
 
 ## Overview
 I wrote this program to help me organize my music library.
